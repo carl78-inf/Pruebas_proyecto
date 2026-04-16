@@ -141,3 +141,5 @@ class Player2(arcade.Sprite):
             + self._width = self._texture.width * self._scale[0]
             + self._height = self._texture.height * self._scale[1]
         """
+        self.pos_z = 9
+        self.change_z = 0

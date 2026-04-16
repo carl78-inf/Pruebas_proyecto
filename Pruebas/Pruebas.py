@@ -6,6 +6,7 @@ python -m arcade.examples.platform_tutorial.14_multiple_levels
 """
 import arcade
 import Player2 as p
+import math
 
 # Constants
 WINDOW_WIDTH = 1280
@@ -153,9 +154,15 @@ class GameView(arcade.Window):
 
         # Draw our Score
         self.score_text.draw()
+        arcade.draw_text(text= (self.player_sprite.center_x, self.player_sprite.center_y, self.player_sprite.pos_z), x = 50, y = 50, color= arcade.color.BLACK)
 
     def on_update(self, delta_time):
         """Movement and Game Logic"""
+        height = self.player_sprite.height
+        self.player_sprite.pos_z += self.player_sprite.change_z
+        if(self.player_sprite.change_z != 0): 
+            self.player_sprite.center_y += math.copysign(1, self.player_sprite.change_z)*(1/2)*height + (1/2)*self.player_sprite.height
+            self.player_sprite.scale = list(self.player_sprite.scale)[0] + math.copysign(1, self.player_sprite.change_z)*0.1
 
         # Move the player using our physics engine
         self.physics_engine.update()
@@ -199,7 +206,7 @@ class GameView(arcade.Window):
         if key == arcade.key.ESCAPE:
             self.setup()
 
-        if key == arcade.key.UP or key == arcade.key.W:
+        if key == arcade.key.SPACE or key == arcade.key.W:
             if self.physics_engine.can_jump():
                 self.player_sprite.change_y = PLAYER_JUMP_SPEED
                 arcade.play_sound(self.jump_sound)
